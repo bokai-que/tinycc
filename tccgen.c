@@ -3976,6 +3976,7 @@ redo:
             ad->f.func_alwinl = 1;
             break;
         case TOK_SECTION1:
+        case 中_节:
         case TOK_SECTION2:
             skip('(');
 	    astr = parse_mult_str("section name")->data;

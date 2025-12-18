@@ -2017,7 +2017,7 @@ ST_FUNC void preprocess(int is_bof)
         break;
 
     case TOK_LINE:
-    case 中_行:
+    case 中_行号:
         parse_flags &= ~PARSE_FLAG_TOK_NUM;
         next();
         if (tok != TOK_PPNUM) {
