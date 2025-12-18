@@ -3931,7 +3931,7 @@ static void parse_attribute(AttributeDef *ad)
     AttributeDef ad_tmp;
     
 redo:
-    if (tok != TOK_ATTRIBUTE1 && tok != TOK_ATTRIBUTE2)
+    if (tok != TOK_ATTRIBUTE1 && tok != 中_属性 && tok != TOK_ATTRIBUTE2)
         return;
     if (NULL == ad) /* skip over / ignore attributes */
         ad = &ad_tmp;

@@ -3597,7 +3597,7 @@ static int macro_subst(
             if (nosubst && t != '(')
                 nosubst = 0;
             /* GCC supports 'defined' as result of a macro substitution */
-            if ((t == TOK_DEFINED || t == 中_已定义) && pp_expr)
+            if ((t == TOK_DEFINED && pp_expr) || (t == 中_已定义 && pp_expr))
                 nosubst = 1;
         }
     }
