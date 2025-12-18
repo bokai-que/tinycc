@@ -210,10 +210,9 @@
      DEF(中_能见度, "能见度")//visibility
 #endif /* 关键字_H */
 
-#ifndef _TCCTOK_H
-#define _TCCTOK_H
-/*********************************************************************/
-/* 关键字 keywords */
+
+/*********************************************************************
+// 关键字 keywords
      DEF(TOK_IF, "if")
      DEF(TOK_ELSE, "else")
      DEF(TOK_WHILE, "while")
@@ -235,24 +234,24 @@
      DEF(TOK_UNSIGNED, "unsigned")
      DEF(TOK__Atomic, "_Atomic")
      DEF(TOK_CONST1, "const")
-     DEF(TOK_CONST2, "__const") /* gcc keyword */
-     DEF(TOK_CONST3, "__const__") /* gcc keyword */
+     DEF(TOK_CONST2, "__const") // gcc keyword
+     DEF(TOK_CONST3, "__const__") // gcc keyword
      DEF(TOK_VOLATILE1, "volatile")
-     DEF(TOK_VOLATILE2, "__volatile") /* gcc keyword */
-     DEF(TOK_VOLATILE3, "__volatile__") /* gcc keyword */
+     DEF(TOK_VOLATILE2, "__volatile") // gcc keyword
+     DEF(TOK_VOLATILE3, "__volatile__") // gcc keyword
      DEF(TOK_REGISTER, "register")
      DEF(TOK_SIGNED1, "signed")
-     DEF(TOK_SIGNED2, "__signed") /* gcc keyword */
-     DEF(TOK_SIGNED3, "__signed__") /* gcc keyword */
+     DEF(TOK_SIGNED2, "__signed") // gcc keyword
+     DEF(TOK_SIGNED3, "__signed__") // gcc keyword
      DEF(TOK_AUTO, "auto")
      DEF(TOK_INLINE1, "inline")
-     DEF(TOK_INLINE2, "__inline") /* gcc keyword */
-     DEF(TOK_INLINE3, "__inline__") /* gcc keyword */
+     DEF(TOK_INLINE2, "__inline") // gcc keyword
+     DEF(TOK_INLINE3, "__inline__") // gcc keyword
      DEF(TOK_RESTRICT1, "restrict")
      DEF(TOK_RESTRICT2, "__restrict")
      DEF(TOK_RESTRICT3, "__restrict__")
-     DEF(TOK_EXTENSION, "__extension__") /* gcc keyword */
-     DEF(TOK_THREAD_LOCAL, "_Thread_local") /* C11 thread-local storage */
+     DEF(TOK_EXTENSION, "__extension__") // gcc keyword
+     DEF(TOK_THREAD_LOCAL, "_Thread_local") // C11 thread-local storage
 
      DEF(TOK_GENERIC, "_Generic")
      DEF(TOK_STATIC_ASSERT, "_Static_assert")
@@ -282,9 +281,9 @@
      DEF(TOK_TYPEOF3, "__typeof__")
      DEF(TOK_LABEL, "__label__")
 
-/*********************************************************************/
-/* 以下不是关键字。包含它们是为了简化解析 the following are not keywords. They are included to ease parsing */
-/* 仅限预处理器 preprocessor only */
+//*********************************************************************
+// 以下不是关键字。包含它们是为了简化解析 the following are not keywords. They are included to ease parsing
+// 仅限预处理器 preprocessor only
      DEF(TOK_DEFINE, "define")
      DEF(TOK_INCLUDE, "include")
      DEF(TOK_INCLUDE_NEXT, "include_next")
@@ -308,16 +307,16 @@
      DEF(TOK___HAS_INCLUDE, "__has_include")
      DEF(TOK___HAS_INCLUDE_NEXT, "__has_include_next")
 
-/* 特殊标识符 special identifiers */
+// 特殊标识符 special identifiers
      DEF(TOK___FUNC__, "__func__")
 
-/* 特殊浮点值 special floating point values */
+// 特殊浮点值 special floating point values
      DEF(TOK___NAN__, "__nan__")
      DEF(TOK___SNAN__, "__snan__")
      DEF(TOK___INF__, "__inf__")
 
-/* 属性标识符 attribute identifiers */
-/* XXX: 一般处理所有tokens，因为速度并不重要 handle all tokens generically since speed is not critical */
+// 属性标识符 attribute identifiers
+// XXX: 一般处理所有tokens，因为速度并不重要 handle all tokens generically since speed is not critical
      DEF(TOK_SECTION1, "section")
      DEF(TOK_SECTION2, "__section__")
      DEF(TOK_ALIGNED1, "aligned")
@@ -385,7 +384,7 @@
      DEF(TOK_builtin_return_address, "__builtin_return_address")
      DEF(TOK_builtin_expect, "__builtin_expect")
      DEF(TOK_builtin_unreachable, "__builtin_unreachable")
-     /*DEF(TOK_builtin_va_list, "__builtin_va_list")*/
+     //DEF(TOK_builtin_va_list, "__builtin_va_list")
 #if defined TCC_TARGET_PE && defined TCC_TARGET_X86_64
      DEF(TOK_builtin_va_start, "__builtin_va_start")
 #elif defined TCC_TARGET_X86_64
@@ -395,9 +394,9 @@
      DEF(TOK_builtin_va_arg, "__builtin_va_arg")
 #elif defined TCC_TARGET_RISCV64
      DEF(TOK_builtin_va_start, "__builtin_va_start")
-#endif /* defined TCC_TARGET_PE && defined TCC_TARGET_X86_64 */
+#endif // defined TCC_TARGET_PE && defined TCC_TARGET_X86_64
 
-/* 原子操作 atomic operations */
+// 原子操作 atomic operations
 #define DEF_ATOMIC(ID) DEF(TOK_##__##ID, "__"#ID)
      DEF_ATOMIC(atomic_store)
      DEF_ATOMIC(atomic_load)
@@ -416,12 +415,12 @@
      DEF_ATOMIC(atomic_and_fetch)
      DEF_ATOMIC(atomic_nand_fetch)
 
-/* 编译指示 pragma */
+// 编译指示 pragma
      DEF(TOK_pack, "pack")
 #if !defined(TCC_TARGET_I386) && !defined(TCC_TARGET_X86_64) && \
     !defined(TCC_TARGET_ARM) && !defined(TCC_TARGET_ARM64) && \
     !defined(TCC_TARGET_RISCV64)
-     /* 已为汇编程序定义 already defined for assembler */
+     // 已为汇编程序定义 already defined for assembler
      DEF(TOK_ASM_push, "push")
      DEF(TOK_ASM_pop, "pop")
 #endif
@@ -434,7 +433,7 @@
      DEF(TOK_once, "once")
      DEF(TOK_option, "option")
 
-/* 内建函数或变量 builtin functions or variables */
+// 内建函数或变量 builtin functions or variables
 #ifndef TCC_ARM_EABI
      DEF(TOK_memcpy, "memcpy")
      DEF(TOK_memmove, "memmove")
@@ -451,10 +450,10 @@
 # ifndef TCC_ARM_VFP
      DEF(TOK___floatundixf, "__floatundixf")
      DEF(TOK___fixunsxfdi, "__fixunsxfdi")
-# endif /* TCC_ARM_VFP */
+# endif // TCC_ARM_VFP 
      DEF(TOK___fixunssfdi, "__fixunssfdi")
      DEF(TOK___fixunsdfdi, "__fixunsdfdi")
-#endif /* !TCC_ARM_EABI */
+#endif // !TCC_ARM_EABI 
 
 #if defined TCC_TARGET_ARM
 # ifdef TCC_ARM_EABI
@@ -493,12 +492,11 @@
      DEF(TOK___fixunsdfsi, "__fixunsdfsi")
      DEF(TOK___fixunsxfsi, "__fixunsxfsi")
      DEF(TOK___fixxfdi, "__fixxfdi")
-#  endif /* TCC_ARM_VFP */
+#  endif // TCC_ARM_VFP
      DEF(TOK___fixsfdi, "__fixsfdi")
      DEF(TOK___fixdfdi, "__fixdfdi")
-# endif /* TCC_ARM_EABI */
-#endif /* TCC_TARGET_ARM */
-
+# endif // TCC_ARM_EABI
+#endif // TCC_TARGET_ARM
 #if defined TCC_TARGET_C67
      DEF(TOK__divi, "_divi")
      DEF(TOK__divu, "_divu")
@@ -506,23 +504,22 @@
      DEF(TOK__divd, "_divd")
      DEF(TOK__remi, "_remi")
      DEF(TOK__remu, "_remu")
-#endif /* TCC_TARGET_C67 */
+#endif // TCC_TARGET_C67
 
 #if defined TCC_TARGET_I386
      DEF(TOK___fixsfdi, "__fixsfdi")
      DEF(TOK___fixdfdi, "__fixdfdi")
      DEF(TOK___fixxfdi, "__fixxfdi")
-#endif/* TCC_TARGET_I386 */
+#endif // TCC_TARGET_I386
 
 #if defined TCC_TARGET_X86_64
      DEF(TOK___fixxfdi, "__fixxfdi")
-#endif/* TCC_TARGET_X86_64 */
-
+#endif // TCC_TARGET_X86_64
      DEF(TOK_alloca, "alloca")
 
 #if defined TCC_TARGET_PE
      DEF(TOK___chkstk, "__chkstk")
-#endif/* TCC_TARGET_PE */
+#endif // TCC_TARGET_PE
 
 #if defined TCC_TARGET_ARM64 || defined TCC_TARGET_RISCV64
      DEF(TOK___arm64_clear_cache, "__arm64_clear_cache")
@@ -548,9 +545,9 @@
      DEF(TOK___letf2, "__letf2")
      DEF(TOK___gttf2, "__gttf2")
      DEF(TOK___getf2, "__getf2")
-#endif/* defined TCC_TARGET_ARM64 || defined TCC_TARGET_RISCV64 */
+#endif // defined TCC_TARGET_ARM64 || defined TCC_TARGET_RISCV64
 
-/* 边界检查符号 bound checking symbols */
+// 边界检查符号 bound checking symbols
 #ifdef CONFIG_TCC_BCHECK
      DEF(TOK___bound_ptr_add, "__bound_ptr_add")
      DEF(TOK___bound_ptr_indir1, "__bound_ptr_indir1")
@@ -568,20 +565,20 @@
 # ifdef TCC_TARGET_PE
 #  ifdef TCC_TARGET_X86_64
      DEF(TOK___bound_alloca_nr, "__bound_alloca_nr")
-#  endif/* TCC_TARGET_X86_64 */
+#  endif // TCC_TARGET_X86_64
 # else
      DEF(TOK_sigsetjmp, "sigsetjmp")
      DEF(TOK___sigsetjmp, "__sigsetjmp")
      DEF(TOK_siglongjmp, "siglongjmp")
-# endif/* TCC_TARGET_PE */
+# endif // TCC_TARGET_PE
      DEF(TOK_setjmp, "setjmp")
      DEF(TOK__setjmp, "_setjmp")
      DEF(TOK_longjmp, "longjmp")
-#endif/* CONFIG_TCC_BCHECK */
+#endif // CONFIG_TCC_BCHECK
 
 
-/*********************************************************************/
-/* tcc汇编器 Tiny Assembler */
+//********************************************************************
+// tcc汇编器 Tiny Assembler
 #define DEF_ASM(x) DEF(TOK_ASM_ ## x, #x)
 #define DEF_ASMDIR(x) DEF(TOK_ASMDIR_ ## x, "." #x)
 #define TOK_ASM_int TOK_INT
@@ -589,7 +586,7 @@
 #define TOK_ASMDIR_FIRST TOK_ASMDIR_byte
 #define TOK_ASMDIR_LAST TOK_ASMDIR_section
 
- DEF_ASMDIR(byte)       /* 必须是第一个指令 must be first directive */
+ DEF_ASMDIR(byte)       // 必须是第一个指令 must be first directive
  DEF_ASMDIR(word)
  DEF_ASMDIR(align)
  DEF_ASMDIR(balign)
@@ -626,24 +623,23 @@
  DEF_ASMDIR(code64)
 #elif defined(TCC_TARGET_RISCV64)
  DEF_ASMDIR(option)
-#endif/* defined(TCC_TARGET_I386) */
+#endif // defined(TCC_TARGET_I386)
  DEF_ASMDIR(short)
  DEF_ASMDIR(long)
  DEF_ASMDIR(int)
  DEF_ASMDIR(symver)
  DEF_ASMDIR(reloc)
- DEF_ASMDIR(section)    /* 必须是最后一个指令 must be last directive */
+ DEF_ASMDIR(section)    // 必须是最后一个指令 must be last directive
 
 #if defined TCC_TARGET_I386 || defined TCC_TARGET_X86_64
 #include "i386-tok.h"
-#endif/* defined TCC_TARGET_I386 || defined TCC_TARGET_X86_64 */
-
+#endif // defined TCC_TARGET_I386 || defined TCC_TARGET_X86_64
 #if defined TCC_TARGET_ARM || defined TCC_TARGET_ARM64
 #include "arm-tok.h"
-#endif/* defined TCC_TARGET_ARM || defined TCC_TARGET_ARM64 */
+#endif // defined TCC_TARGET_ARM || defined TCC_TARGET_ARM64
 
 #if defined TCC_TARGET_RISCV64
 #include "riscv64-tok.h"
-#endif/* defined TCC_TARGET_RISCV64 */
-
-#endif /* TCCTOK_H */
+#endif // defined TCC_TARGET_RISCV64
+#endif // TCCTOK_H 
+*/
