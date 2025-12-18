@@ -1,9 +1,4 @@
-#ifndef _TCCTOK_H
-#define _TCCTOK_H
 
-#ifndef 关键字_H
-#include "关键字.h"
-#endif /* 关键字_H */
 /*********************************************************************/
 /* keywords */
      DEF(TOK_IF, "if")
@@ -433,5 +428,3 @@
 #if defined TCC_TARGET_RISCV64
 #include "riscv64-tok.h"
 #endif
-
-#endif /* _TCCTOK_H */

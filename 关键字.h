@@ -210,7 +210,8 @@
      DEF(中_能见度, "能见度")//visibility
 #endif /* 关键字_H */
 
-#ifndef TCCTOK_H
+#ifndef _TCCTOK_H
+#define _TCCTOK_H
 /*********************************************************************/
 /* 关键字 keywords */
      DEF(TOK_IF, "if")
