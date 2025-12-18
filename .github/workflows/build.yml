@@ -30,7 +30,7 @@ jobs:
       run: ./configure && make && make test -k
 
   test-x86_64-win32:
-    runs-on: windows-2025
+    runs-on: windows-latest
     timeout-minutes: 6
     steps:
     - uses: actions/checkout@v6
@@ -58,7 +58,7 @@ jobs:
         .\tcc -I.. libtcc.dll -run ../tests/libtcc_test.c
 
   test-i386-win32:
-    runs-on: windows-2025
+    runs-on: windows-latest
     timeout-minutes: 6
     steps:
     - uses: actions/checkout@v6

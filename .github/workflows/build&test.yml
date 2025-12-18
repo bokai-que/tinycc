@@ -32,7 +32,7 @@ jobs:
       run: ./configure && make && make test -k
 
   test-x86_64-win32:
-    runs-on: windows-2025
+    runs-on: windows-latest
     timeout-minutes: 6
     steps:
     - uses: actions/checkout@v6
@@ -46,21 +46,21 @@ jobs:
         C:\msys64\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
         echo ::endgroup::
         C:\msys64\usr\bin\bash -l -c "./configure && make && make test -k"
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: amd64
-    - name: build with MSVC (x86_64-win32)
-      shell: cmd
-      run: |
-        echo ::group:: run build-tcc.bat
-        cd win32
-        call build-tcc.bat -t 64 -c cl
-        echo ::endgroup::
-        .\tcc -I.. libtcc.dll -v ../tests/libtcc_test.c -o libtest.exe && .\libtest.exe
-        .\tcc -I.. libtcc.dll -run ../tests/libtcc_test.c
+    #- uses: ilammy/msvc-dev-cmd@v1
+      #with:
+        #arch: amd64
+    #- name: build with MSVC (x86_64-win32)
+      #shell: cmd
+      #run: |
+        #echo ::group:: run build-tcc.bat
+        #cd win32
+        #call build-tcc.bat -t 64 -c cl
+        #echo ::endgroup::
+        #.\tcc -I.. libtcc.dll -v ../tests/libtcc_test.c -o libtest.exe && .\libtest.exe
+        #.\tcc -I.. libtcc.dll -run ../tests/libtcc_test.c
 
   test-i386-win32:
-    runs-on: windows-2025
+    runs-on: windows-latest
     timeout-minutes: 6
     steps:
     - uses: actions/checkout@v6
@@ -74,18 +74,18 @@ jobs:
         C:\msys64\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
         echo ::endgroup::
         C:\msys64\usr\bin\bash -l -c "./configure && make && make test -k"
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x86
-    - name: build with MSVC (i386-win32)
-      shell: cmd
-      run: |
-        echo ::group:: run build-tcc.bat
-        cd win32
-        call build-tcc.bat -t 32 -c cl
-        echo ::endgroup::
-        .\tcc -I.. libtcc.dll -v ../tests/libtcc_test.c -o libtest.exe && .\libtest.exe
-        .\tcc -I.. libtcc.dll -run ../tests/libtcc_test.c
+    #- uses: ilammy/msvc-dev-cmd@v1
+      #with:
+        #arch: x86
+    #- name: build with MSVC (i386-win32)
+      #shell: cmd
+      #run: |
+        #echo ::group:: run build-tcc.bat
+        #cd win32
+        #call build-tcc.bat -t 32 -c cl
+        #echo ::endgroup::
+        #.\tcc -I.. libtcc.dll -v ../tests/libtcc_test.c -o libtest.exe && .\libtest.exe
+        #.\tcc -I.. libtcc.dll -run ../tests/libtcc_test.c
 
   test-armv7-linux:
     runs-on: ubuntu-latest
@@ -140,3 +140,5 @@ jobs:
         run: |
             echo "::endgroup::" # flatten 'run container'
             ./configure && make && make test -k
+
+  
