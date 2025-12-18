@@ -4783,7 +4783,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             u = VT_SHORT;
             goto basic_type;
         case TOK_INT:
-        case 中_整型:
+        case 中_整数:
             u = VT_INT;
             goto basic_type;
         case TOK_ALIGNAS:
@@ -4832,7 +4832,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             u = VT_FLOAT;
             goto basic_type;
         case TOK_DOUBLE:
-        case 中_双精度:
+        case 中_双精:
             if ((t & (VT_BTYPE|VT_LONG)) == VT_LONG) {
                 t = (t & ~(VT_BTYPE|VT_LONG)) | VT_LDOUBLE;
             } else {
