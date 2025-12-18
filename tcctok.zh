@@ -20,7 +20,38 @@
  * (Tiny C Compiler 0.9.28rc)开发的中文C语言编译器
  * 符合C89和C99标准,跨平台,可把C语言作为脚本运行,目前仅支持自举迭代升级。
  ***************************************************************************************************************/
+/* 
+C99
 
+流程控制
+if 如果 else 否则 while 判断 for 循环 do 执行
+continue 继续 break 跳出 return 返回 goto 跳转
+switch 选择 case 分支
+
+数据类型
+void 无 char 字符 int 整数 float 浮点 double 双精
+_Bool 布尔 _Complex 复数 short 短整 long 长整
+struct 结构 union 共用 typedef 类型定义 enum 枚举
+sizeof 取大小 
+
+其他
+default 默认 extern 外部 static 静态 const 常量
+volatile 易变 register 寄存器 signed 有符 auto 自动
+inline 内联 restrict 限制 unsigned 无符 Imaginary
+
+C11
+
+_Alignas 设对齐边界 _Alignof 取对齐边界 _Atomic 
+原子 _Generic 通用 _Noreturn _Static_assert 静态断言 
+_Thread_local 本地线程
+
+C23
+数据类型
+typeof 取类型 bool 布尔 static_assert 静态断言
+alignas 设对齐边界 alignof 取对齐边界  thread_local
+constexpr false nullptr true  typeof_unqual 本地线程
+_BitInt _Decimal128 _Decimal32 _Decimal64
+*/
 /***************************************************************************************************************
  * 项目：token可以翻译成“单词符号”，简称单词。
  * 描述：系统(单词编码,单词字符串)

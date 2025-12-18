@@ -6051,7 +6051,7 @@ ST_FUNC void unary(void)
         for (;;) {
 	    learn = 0;
 	    skip(',');
-	    if (tok == TOK_DEFAULT) {
+	    if (tok == TOK_DEFAULT || tok == 中_默认) {
 		if (has_default)
 		    tcc_error("too many 'default'");
 		has_default = 1;
@@ -7178,14 +7178,14 @@ again:
     if (debug_modes)
         tcc_tcov_check_line (tcc_state, 0), tcc_tcov_block_begin (tcc_state);
 
-    if (t == TOK_IF) {
+    if (t == TOK_IF || t == 中_如果) {
         new_scope_s(&o);
         skip('(');
         gexpr_decl();
         a = gvtst(1, 0);
         skip(')');
         block(0);
-        if (tok == TOK_ELSE) {
+        if (tok == TOK_ELSE || tok == 中_否则) {
             d = gjmp(0);
             gsym(a);
             next();
@@ -7196,7 +7196,7 @@ again:
         }
         prev_scope_s(&o);
 
-    } else if (t == TOK_WHILE) {
+    } else if (t == TOK_WHILE || t == 中_判断) {
         new_scope_s(&o);
         d = gind();
         skip('(');
@@ -7242,7 +7242,7 @@ again:
         else if (!nocode_wanted)
             check_func_return();
 
-    } else if (t == TOK_RETURN) {
+    } else if (t == TOK_RETURN || t == 中_返回) {
         b = (func_vt.t & VT_BTYPE) != VT_VOID;
         if (tok != ';') {
             gexpr();
@@ -7268,7 +7268,7 @@ again:
 	    tcc_tcov_block_end (tcc_state, -1);
         CODE_OFF();
 
-    } else if (t == TOK_BREAK) {
+    } else if (t == TOK_BREAK || t == 中_跳出) {
         /* compute jump */
         if (!cur_scope->bsym)
             tcc_error("cannot break");
@@ -7279,7 +7279,7 @@ again:
         *cur_scope->bsym = gjmp(*cur_scope->bsym);
         skip(';');
 
-    } else if (t == TOK_CONTINUE) {
+    } else if (t == TOK_CONTINUE || t == 中_继续) {
         /* compute jump */
         if (!cur_scope->csym)
             tcc_error("cannot continue");
@@ -7287,7 +7287,7 @@ again:
         *cur_scope->csym = gjmp(*cur_scope->csym);
         skip(';');
 
-    } else if (t == TOK_FOR) {
+    } else if (t == TOK_FOR || t == 中_循环) {
         new_scope(&o);
 
         skip('(');
@@ -7322,13 +7322,16 @@ again:
         gsym(a);
         prev_scope(&o, 0);
 
-    } else if (t == TOK_DO) {
+    } else if (t == TOK_DO || t == 中_执行) {
         new_scope_s(&o);
         a = b = 0;
         d = gind();
         lblock(&a, &b);
         gsym(b);
-        skip(TOK_WHILE);
+        if (tok == TOK_WHILE)
+            skip(TOK_WHILE);
+        else
+            skip(中_判断);
         skip('(');
 	gexpr();
         c = gvtst(0, 0);
@@ -7338,7 +7341,7 @@ again:
         gsym(a);
         prev_scope_s(&o);
 
-    } else if (t == TOK_SWITCH) {
+    } else if (t == TOK_SWITCH || t == 中_选择) {
         struct switch_t *sw;
 
         sw = tcc_mallocz(sizeof *sw);
@@ -7379,7 +7382,7 @@ again:
         gsym(a);
         end_switch();
 
-    } else if (t == TOK_CASE) {
+    } else if (t == TOK_CASE || t == 中_分支) {
         struct case_t *cr;
         if (!cur_switch)
             expect("switch");
@@ -7400,7 +7403,7 @@ again:
         skip(':');
         goto block_after_label;
 
-    } else if (t == TOK_DEFAULT) {
+    } else if (t == TOK_DEFAULT || t == 中_默认) {
         if (!cur_switch)
             expect("switch");
         if (cur_switch->def_sym)
@@ -7409,7 +7412,7 @@ again:
         skip(':');
         goto block_after_label;
 
-    } else if (t == TOK_GOTO) {
+    } else if (t == TOK_GOTO || t == 中_转到) {
         vla_restore(cur_scope->vla.locorig);
         if (tok == '*' && gnu_ext) {
             /* computed goto */
@@ -7447,7 +7450,7 @@ again:
         }
         skip(';');
 
-    } else if (t == TOK_ASM1 || t == TOK_ASM2 || t == TOK_ASM3) {
+    } else if (t == TOK_ASM1 || t == 中_汇编 || t == TOK_ASM2 || t == TOK_ASM3) {
         asm_instr();
 
     } else {
@@ -8708,7 +8711,7 @@ static int decl(int l)
             }
             if (l != VT_CONST)
                 break;
-            if (tok == TOK_ASM1 || tok == TOK_ASM2 || tok == TOK_ASM3) {
+            if (tok == TOK_ASM1 || tok == 中_汇编 || tok == TOK_ASM2 || tok == TOK_ASM3) {
                 /* global asm block */
                 asm_global_instr();
                 continue;
@@ -8776,7 +8779,7 @@ static int decl(int l)
                 tcc_warning("type defaults to int");
             }
 
-            if (gnu_ext && (tok == TOK_ASM1 || tok == TOK_ASM2 || tok == TOK_ASM3)) {
+            if (gnu_ext && (tok == TOK_ASM1 || tok == 中_汇编 || tok == TOK_ASM2 || tok == TOK_ASM3)) {
                 ad.asm_label = asm_label_instr();
                 /* parse one last attribute list, after asm label */
                 parse_attribute(&ad);

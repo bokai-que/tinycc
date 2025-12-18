@@ -1265,8 +1265,8 @@ ST_FUNC void asm_instr(void)
 
     /* since we always generate the asm() instruction, we can ignore
        volatile */
-    while (tok == TOK_VOLATILE1 || tok == TOK_VOLATILE2 || tok == TOK_VOLATILE3
-           || tok == TOK_GOTO) {
+    while (tok == TOK_VOLATILE1 || tok == 中_易变 || tok == TOK_VOLATILE2 || tok == TOK_VOLATILE3
+           || tok == TOK_GOTO || tok == 中_跳转) {
         next();
     }
 
