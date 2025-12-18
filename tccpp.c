@@ -1004,13 +1004,13 @@ redo_start:
                 next_nomacro();
                 p = file->buf_ptr;
                 if (a == 0 && 
-                    (tok == TOK_ELSE || tok == 中_否则 || tok == TOK_ELIF || tok == TOK_ENDIF))
+                    (tok == TOK_ELSE || tok == 中_否则 || tok == TOK_ELIF || tok == 中_否则如果 || tok == TOK_ENDIF || tok == 中_结束如果))
                     goto the_end;
-                if (tok == TOK_IF || tok == 中_如果 || tok == TOK_IFDEF || tok == TOK_IFNDEF)
+                if (tok == TOK_IF || tok == 中_如果 || tok == TOK_IFDEF || tok == 中_如定义 || tok == TOK_IFNDEF || tok == 中_如未定义)
                     a++;
-                else if (tok == TOK_ENDIF)
+                else if (tok == TOK_ENDIF || tok == 中_结束如果)
                     a--;
-                else if( tok == TOK_ERROR || tok == TOK_WARNING)
+                else if( tok == TOK_ERROR || tok == 中_错误 || tok == TOK_WARNING || tok == 中_警告)
                     in_warn_or_error = 1;
                 else if (tok == TOK_LINEFEED)
                     goto redo_start;
@@ -1546,7 +1546,7 @@ static int expr_preprocess(TCCState *s1)
             if (tok >= TOK_STR && tok <= TOK_CLDOUBLE)
                 tcc_error("invalid constant in preprocessor expression");
 
-        } else if (tok == TOK_DEFINED) {
+        } else if (tok == TOK_DEFINED || tok == 中_已定义) {
             parse_flags &= ~PARSE_FLAG_PREPROCESS; /* no macro subst */
             next();
             t = tok;
@@ -1621,7 +1621,7 @@ ST_FUNC void parse_define(void)
     TokenString str;
 
     v = tok;
-    if (v < TOK_IDENT || v == TOK_DEFINED)
+    if (v < TOK_IDENT || v == TOK_DEFINED || v == 中_已定义)
         tcc_error("invalid macro name '%s'", get_tok_str(tok, &tokc));
     first = NULL;
     t = MACRO_OBJ;
@@ -1905,12 +1905,14 @@ ST_FUNC void preprocess(int is_bof)
  redo:
     switch(tok) {
     case TOK_DEFINE:
+    case 中_类型定义:
         pp_debug_tok = tok;
         next_nomacro();
         pp_debug_symv = tok;
         parse_define();
         break;
     case TOK_UNDEF:
+    case 中_解定义:
         pp_debug_tok = tok;
         next_nomacro();
         pp_debug_symv = tok;
@@ -1924,7 +1926,12 @@ ST_FUNC void preprocess(int is_bof)
     case TOK_INCLUDE_NEXT:
         parse_include(s1, tok - TOK_INCLUDE, 0);
         goto the_end;
+    case 中_导入:
+    case 中_导入下个:
+        parse_include(s1, tok - 中_导入, 0);
+        goto the_end;
     case TOK_IFNDEF:
+    case 中_如未定义:
         c = 1;
         goto do_ifdef;
     case TOK_IF:    
@@ -1932,6 +1939,7 @@ ST_FUNC void preprocess(int is_bof)
         c = expr_preprocess(s1);
         goto do_if;
     case TOK_IFDEF:
+    case 中_如定义:
         c = 0;
     do_ifdef:
         next_nomacro();
@@ -1965,6 +1973,7 @@ ST_FUNC void preprocess(int is_bof)
         c = (s1->ifdef_stack_ptr[-1] ^= 3);
         goto test_else;
     case TOK_ELIF:
+    case 中_否则如果:
         if (s1->ifdef_stack_ptr == s1->ifdef_stack)
             tcc_error("#elif without matching #if");
         c = s1->ifdef_stack_ptr[-1];
@@ -1990,6 +1999,7 @@ ST_FUNC void preprocess(int is_bof)
         }
         break;
     case TOK_ENDIF:
+    case 中_结束如果:
         next_nomacro();
         if (s1->ifdef_stack_ptr <= file->ifdef_stack_ptr)
             tcc_error("#endif without matching #if");
@@ -2007,6 +2017,7 @@ ST_FUNC void preprocess(int is_bof)
         break;
 
     case TOK_LINE:
+    case 中_行:
         parse_flags &= ~PARSE_FLAG_TOK_NUM;
         next();
         if (tok != TOK_PPNUM) {
@@ -2042,7 +2053,9 @@ ST_FUNC void preprocess(int is_bof)
         break;
 
     case TOK_ERROR:
+    case 中_错误:
     case TOK_WARNING:
+    case 中_警告:
     {
         q = buf;
         c = skip_spaces();
@@ -2052,7 +2065,7 @@ ST_FUNC void preprocess(int is_bof)
             c = ninp();
         }
         *q = '\0';
-        if (tok == TOK_ERROR)
+        if (tok == TOK_ERROR || tok == 中_错误)
             tcc_error("#error %s", buf);
         else
             tcc_warning("#warning %s", buf);
@@ -3584,7 +3597,7 @@ static int macro_subst(
             if (nosubst && t != '(')
                 nosubst = 0;
             /* GCC supports 'defined' as result of a macro substitution */
-            if (t == TOK_DEFINED && pp_expr)
+            if ((t == TOK_DEFINED || t == 中_已定义) && pp_expr)
                 nosubst = 1;
         }
     }
@@ -3990,9 +4003,9 @@ static void pp_debug_defines(TCCState *s1)
     fp = s1->ppfp;
     v = pp_debug_symv;
     vs = get_tok_str(v, NULL);
-    if (t == TOK_DEFINE) {
+    if (t == TOK_DEFINE || t == 中_定义) {
         define_print(s1, v);
-    } else if (t == TOK_UNDEF) {
+    } else if (t == TOK_UNDEF || t == 中_解定义) {
         fprintf(fp, "#undef %s\n", vs);
     } else if (t == TOK_push_macro) {
         fprintf(fp, "#pragma push_macro(\"%s\")\n", vs);

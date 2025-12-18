@@ -3931,7 +3931,7 @@ static void parse_attribute(AttributeDef *ad)
     AttributeDef ad_tmp;
     
 redo:
-    if (tok != TOK_ATTRIBUTE1 && tok != TOK_ATTRIBUTE2)
+    if (tok != TOK_ATTRIBUTE1 && tok == !中_属性 && tok != TOK_ATTRIBUTE2)
         return;
     if (NULL == ad) /* skip over / ignore attributes */
         ad = &ad_tmp;
@@ -4041,6 +4041,7 @@ redo:
                track used/unused objects */
             break;
         case TOK_CONST1:
+        case 中_常量:
         case TOK_CONST2:
         case TOK_CONST3:
         case TOK_PURE1:
@@ -4594,7 +4595,7 @@ do_decl:
             flexible = 0;
             while (tok != '}') {
                 if (!parse_btype(&btype, &ad1, 0)) {
-                    if (tok == TOK_STATIC_ASSERT) {
+                    if (tok == TOK_STATIC_ASSERT || tok == 中_静态断言) {
                         do_Static_assert();
                         continue;
                     }
@@ -4747,12 +4748,14 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
     while(1) {
         switch(tok) {
         case TOK_EXTENSION:
+        case 中_扩展:
             /* currently, we really ignore extension */
             next();
             continue;
 
             /* basic types */
         case TOK_CHAR:
+        case 中_字符:
             u = VT_BYTE;
         basic_type:
             next();
@@ -4771,15 +4774,19 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             typespec_found = 1;
             break;
         case TOK_VOID:
+        case 中_无:
             u = VT_VOID;
             goto basic_type;
         case TOK_SHORT:
+        case 中_短整:
             u = VT_SHORT;
             goto basic_type;
         case TOK_INT:
+        case 中_整型:
             u = VT_INT;
             goto basic_type;
         case TOK_ALIGNAS:
+        case 中_设对齐:
             { int n;
               AttributeDef ad1;
               next();
@@ -4801,6 +4808,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             }
             continue;
         case TOK_LONG:
+        case 中_长整:
             if ((t & VT_BTYPE) == VT_DOUBLE) {
                 t = (t & ~(VT_BTYPE|VT_LONG)) | VT_LDOUBLE;
             } else if ((t & (VT_BTYPE|VT_LONG)) == VT_LONG) {
@@ -4812,14 +4820,18 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             next();
             break;
         case TOK_BOOL:
+        case 中_布尔:
             u = VT_BOOL;
             goto basic_type;
         case TOK_COMPLEX:
+        case 中_复数:
             tcc_error("_Complex is not yet supported");
         case TOK_FLOAT:
+        case 中_浮点:
             u = VT_FLOAT;
             goto basic_type;
         case TOK_DOUBLE:
+        case 中_双精度:
             if ((t & (VT_BTYPE|VT_LONG)) == VT_LONG) {
                 t = (t & ~(VT_BTYPE|VT_LONG)) | VT_LDOUBLE;
             } else {
@@ -4829,20 +4841,24 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             next();
             break;
         case TOK_ENUM:
+        case 中_枚举:
             struct_decl(&type1, VT_ENUM);
         basic_type2:
             u = type1.t;
             type->ref = type1.ref;
             goto basic_type1;
         case TOK_STRUCT:
+        case 中_结构:
             struct_decl(&type1, VT_STRUCT);
             goto basic_type2;
         case TOK_UNION:
+        case 中_联合:
             struct_decl(&type1, VT_UNION);
             goto basic_type2;
 
             /* type modifiers */
         case TOK__Atomic:
+        case 中_原子:
             next();
             type->t = t;
             parse_btype_qualify(type, VT_ATOMIC);
@@ -4857,6 +4873,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             }
             break;
         case TOK_CONST1:
+        case 中_常量:
         case TOK_CONST2:
         case TOK_CONST3:
             type->t = t;
@@ -4865,6 +4882,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             next();
             break;
         case TOK_VOLATILE1:
+        case 中_易变:
         case TOK_VOLATILE2:
         case TOK_VOLATILE3:
             type->t = t;
@@ -4873,6 +4891,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             next();
             break;
         case TOK_SIGNED1:
+        case 中_有符:
         case TOK_SIGNED2:
         case TOK_SIGNED3:
             if ((t & (VT_DEFSIGN|VT_UNSIGNED)) == (VT_DEFSIGN|VT_UNSIGNED))
@@ -4882,13 +4901,17 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             typespec_found = 1;
             break;
         case TOK_REGISTER:
+        case 中_寄存器:
         case TOK_AUTO:
+        case 中_自动:
         case TOK_RESTRICT1:
+        case 中_限制:
         case TOK_RESTRICT2:
         case TOK_RESTRICT3:
             next();
             break;
         case TOK_UNSIGNED:
+        case 中_无符:
             if ((t & (VT_DEFSIGN|VT_UNSIGNED)) == VT_DEFSIGN)
                 tcc_error("signed and unsigned modifier");
             t |= VT_DEFSIGN | VT_UNSIGNED;
@@ -4898,12 +4921,15 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
 
             /* storage */
         case TOK_EXTERN:
+        case 中_外部:
             g = VT_EXTERN;
             goto storage;
         case TOK_STATIC:
+        case 中_静态:
             g = VT_STATIC;
             goto storage;
         case TOK_TYPEDEF:
+        case 中_类型定义:
             g = VT_TYPEDEF;
             goto storage;
        storage:
@@ -4913,6 +4939,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             next();
             break;
         case TOK_INLINE1:
+        case 中_内联:
         case TOK_INLINE2:
         case TOK_INLINE3:
             t |= VT_INLINE;
@@ -4924,6 +4951,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             break;
             /* GNUC attribute */
         case TOK_ATTRIBUTE1:
+        case 中_属性:
         case TOK_ATTRIBUTE2:
             parse_attribute(ad);
             if (ad->attr_mode) {
@@ -4933,6 +4961,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             continue;
             /* GNUC typeof */
         case TOK_TYPEOF1:
+        case 中_取类型:
         case TOK_TYPEOF2:
         case TOK_TYPEOF3:
             next();
@@ -4946,6 +4975,7 @@ static int parse_btype(CType *type, AttributeDef *ad, int ignore_label)
             }
             goto basic_type2;
         case TOK_THREAD_LOCAL:
+        case 中_本地线程:
             tcc_error("_Thread_local is not implemented");
         default:
             if (typespec_found)
@@ -5142,10 +5172,16 @@ static int post_type(CType *type, AttributeDef *ad, int storage, int td)
 	       in parameter decls.  The '*' as well, and then even only
 	       in prototypes (not function defs).  */
 	    switch (tok) {
-	    case TOK_RESTRICT1: case TOK_RESTRICT2: case TOK_RESTRICT3:
+	    case TOK_RESTRICT1:
+        case 中_限制:
+        case TOK_RESTRICT2: 
+        case TOK_RESTRICT3:
 	    case TOK_CONST1:
+        case 中_常量:
 	    case TOK_VOLATILE1:
+        case 中_易变:
 	    case TOK_STATIC:
+        case 中_静态:
 	    case '*':
 		next();
 		continue;
@@ -5264,24 +5300,29 @@ static CType *type_decl(CType *type, AttributeDef *ad, int *v, int td)
         next();
         switch(tok) {
         case TOK__Atomic:
+        case 中_原子:
             qualifiers |= VT_ATOMIC;
             goto redo;
         case TOK_CONST1:
+        case 中_常量:
         case TOK_CONST2:
         case TOK_CONST3:
             qualifiers |= VT_CONSTANT;
             goto redo;
         case TOK_VOLATILE1:
+        case 中_易变:
         case TOK_VOLATILE2:
         case TOK_VOLATILE3:
             qualifiers |= VT_VOLATILE;
             goto redo;
         case TOK_RESTRICT1:
+        case 中_限制:
         case TOK_RESTRICT2:
         case TOK_RESTRICT3:
             goto redo;
 	/* XXX: clarify attribute handling */
 	case TOK_ATTRIBUTE1:
+    case 中_属性:
 	case TOK_ATTRIBUTE2:
 	    parse_attribute(ad);
 	    break;
@@ -5613,6 +5654,7 @@ ST_FUNC void unary(void)
  tok_next:
     switch(tok) {
     case TOK_EXTENSION:
+    case 中_扩展:
         next();
         goto tok_next;
     case TOK_LCHAR:
@@ -5789,7 +5831,9 @@ ST_FUNC void unary(void)
 	}
         break;
     case TOK_SIZEOF:
+    case 中_取大小:
     case TOK_ALIGNOF1:
+    case 中_取对齐:
     case TOK_ALIGNOF2:
     case TOK_ALIGNOF3:
         t = tok;
@@ -6032,6 +6076,7 @@ ST_FUNC void unary(void)
         break;
 
     case TOK_GENERIC:
+    case 中_泛型:
     {
 	CType controlling_type;
 	int has_default = 0;
@@ -7216,7 +7261,7 @@ again:
         new_scope(&o);
 
         /* handle local labels declarations */
-        while (tok == TOK_LABEL) {
+        while (tok == TOK_LABEL || tok == 中_标签) {
             do {
                 next();
                 if (tok < TOK_UIDENT)
@@ -7328,7 +7373,7 @@ again:
         d = gind();
         lblock(&a, &b);
         gsym(b);
-        if (tok == TOK_WHILE)
+        if (t == TOK_WHILE)
             skip(TOK_WHILE);
         else
             skip(中_判断);
@@ -7412,7 +7457,7 @@ again:
         skip(':');
         goto block_after_label;
 
-    } else if (t == TOK_GOTO || t == 中_转到) {
+    } else if (t == TOK_GOTO || t == 中_跳转) {
         vla_restore(cur_scope->vla.locorig);
         if (tok == '*' && gnu_ext) {
             /* computed goto */
@@ -8705,7 +8750,7 @@ static int decl(int l)
                 next();
                 continue;
             }
-            if (tok == TOK_STATIC_ASSERT) {
+            if (tok == TOK_STATIC_ASSERT || tok == 中_静态断言) {
                 do_Static_assert();
                 continue;
             }

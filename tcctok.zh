@@ -31,7 +31,7 @@ switch 选择 case 分支
 数据类型
 void 无 char 字符 int 整数 float 浮点 double 双精
 _Bool 布尔 _Complex 复数 short 短整 long 长整
-struct 结构 union 共用 typedef 类型定义 enum 枚举
+struct 结构 union 联合 typedef 类型定义 enum 枚举
 sizeof 取大小 
 
 其他
@@ -41,14 +41,14 @@ inline 内联 restrict 限制 unsigned 无符 Imaginary
 
 C11
 
-_Alignas 设对齐边界 _Alignof 取对齐边界 _Atomic 
-原子 _Generic 通用 _Noreturn _Static_assert 静态断言 
+_Alignas 设对齐边界 _Alignof 取对齐 _Atomic 原子 
+_Generic 泛型 _Noreturn _Static_assert 静态断言 
 _Thread_local 本地线程
 
 C23
 数据类型
 typeof 取类型 bool 布尔 static_assert 静态断言
-alignas 设对齐边界 alignof 取对齐边界  thread_local
+alignas 设对齐边界 alignof 取对齐  thread_local
 constexpr false nullptr true  typeof_unqual 本地线程
 _BitInt _Decimal128 _Decimal32 _Decimal64
 */
@@ -115,7 +115,7 @@ _BitInt _Decimal128 _Decimal32 _Decimal64
      DEF(中_扩展, "扩展")//__extension__
      DEF(中_本地线程, "本地线程")//_Thread_local  // C11 thread-local storage
 
-     DEF(中_通用, "通用")//_Generic
+     DEF(中_泛型, "泛型")//_Generic
      DEF(中_静态断言, "静态断言")//_Static_assert // 1.struct_声明;2.外部声明
     //数据类型（只在语法分析解析声明说明符的时候用到一次）
 /*
@@ -129,7 +129,7 @@ _BitInt _Decimal128 _Decimal32 _Decimal64
      DEF(TOK_UTF8_短整, "\xE7\x9F\xAD\xE6\x95\xB4\xE6\x95\xB0")//short
      DEF(TOK_UTF8_长整, "\xE9\x95\xBF\xE6\x95\xB4\xE6\x95\xB0")//long
      DEF(TOK_UTF8_结构, "\xE7\xBB\x93\xE6\x9E\x84\xE4\xBD\x93")//struct
-     DEF(TOK_UTF8_共用, "\xE5\x85\xB1\xE7\x94\xA8\xE4\xBD\x93")//union
+     DEF(TOK_UTF8_联合, "\xE8\x81\x94\xE5\x90\x88")//union
      DEF(TOK_UTF8_类型定义, "\xE7\xB1\xBB\xE5\x9E\x8B\xE5\xAE\x9A\xE4\xB9\x89")//typedef
      DEF(TOK_UTF8_枚举, "\xE6\x9E\x9A\xE4\xB8\xBE")//enum
      DEF(TOK_UTF8_取大小, "\xE5\x8F\x96\xE5\xA4\xA7\xE5\xB0\x8F")//sizeof
@@ -145,14 +145,17 @@ _BitInt _Decimal128 _Decimal32 _Decimal64
      DEF(中_短整,"短整")//short                                  //1.解析数据类型;
      DEF(中_长整,"长整")//long                                   //1.解析数据类型;
      DEF(中_结构, "结构")//struct                                 //1.解析数据类型
-     DEF(中_共用, "共用")//union                                  //1.解析数据类型
+     DEF(中_联合, "联合")//union                                  //1.解析数据类型
      DEF(中_类型定义, "类型定义")//typedef                            //1.解析数据类型
      DEF(中_枚举, "枚举")//enum                                       //1.解析数据类型
      DEF(中_取大小, "取大小")//sizeof                                 //1.一元
+     DEF(中_取对齐, "取对齐")//__alignof
+     DEF(中_设对齐, "设对齐")//_Alignas
      DEF(中_属性, "属性")//__attribute
 
      DEF(中_取类型, "取类型")//typeof                                 //1.解析数据类型
-// **************************************************关键词--结束*************************************************
+     DEF(中_标签, "标签")//__label__
+     // **************************************************关键词--结束*************************************************
 
 // **************************************************************************************************************
 // 以下不是关键字。 包括它们以简化解析 
@@ -184,7 +187,7 @@ _BitInt _Decimal128 _Decimal32 _Decimal64
      DEF(中_错误, "错误")//error                                      // 1.预处理 ；2.预处理；3.预处理_跳过
      DEF(中_警告, "警告")//warning                                    // 1.预处理 ；2.预处理_跳过
      DEF(中_行号, "行号")//line                                       // 1.预处理
-     DEF(中_指示, "指示")//pragma                                     // 1.预处理 ；2.pragma_解析
+     //DEF(中_指示, "指示")//pragma                                     // 1.预处理 ；2.pragma_解析
      DEF(中___行号__, "__行号__")//__LINE__
      DEF(中___文件__, "__文件__")//__FILE__
      DEF(中___日期__, "__日期__")//__DATE__
