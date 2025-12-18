@@ -2,7 +2,7 @@
 #define _TCCTOK_H
 
 #ifndef 关键字_H
-#include "tcctok.h"
+#include "关键字.h"
 #endif /* 关键字_H */
 /*********************************************************************/
 /* keywords */
