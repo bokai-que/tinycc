@@ -548,7 +548,7 @@
      DEF(TOK___letf2, "__letf2")
      DEF(TOK___gttf2, "__gttf2")
      DEF(TOK___getf2, "__getf2")
-#endif/
+#endif/* defined TCC_TARGET_ARM64 || defined TCC_TARGET_RISCV64 */
 
 /* 边界检查符号 bound checking symbols */
 #ifdef CONFIG_TCC_BCHECK
