@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/checkout@v6
     - name: make & test tcc (x86_64-linux)
       run: ./configure && make && make test -k
 
@@ -19,7 +19,7 @@ jobs:
     runs-on: macos-15-intel
     timeout-minutes: 2
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/checkout@v6
     - name: make & test tcc (x86_64-osx)
       run: ./configure && make && make test -k
 
@@ -27,7 +27,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 2
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/checkout@v6
     - name: make & test tcc (aarch64-osx)
       run: ./configure && make && make test -k
 
@@ -35,7 +35,7 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 6
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/checkout@v6
     - name: make & test tcc (x86_64-win32)
       shell: cmd
       run: |
@@ -46,7 +46,7 @@ jobs:
         C:\msys64\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
         echo ::endgroup::
         C:\msys64\usr\bin\bash -l -c "./configure && make && make test -k"
-    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+    - uses: ilammy/msvc-dev-cmd@v1.13
       with:
         arch: amd64
     - name: build with MSVC (x86_64-win32)
@@ -63,7 +63,7 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 6
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/checkout@v6
     - name: make & test tcc (i386-win32)
       shell: cmd
       run: |
@@ -74,7 +74,7 @@ jobs:
         C:\msys64\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
         echo ::endgroup::
         C:\msys64\usr\bin\bash -l -c "./configure && make && make test -k"
-    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+    - uses: ilammy/msvc-dev-cmd@v1.13
       with:
         arch: x86
     - name: build with MSVC (i386-win32)
@@ -91,8 +91,8 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 8
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-    - uses: uraimo/run-on-arch-action@d94c13912ea685de38fccc1109385b83fd79427d # v3.0.1
+    - uses: actions/checkout@v6
+    - uses: uraimo/run-on-arch-action@v3
       name: make & test tcc (armv7-linux)
       with:
         arch: armv7
@@ -109,8 +109,8 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 8
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-    - uses: uraimo/run-on-arch-action@d94c13912ea685de38fccc1109385b83fd79427d # v3.0.1
+    - uses: actions/checkout@v6
+    - uses: uraimo/run-on-arch-action@v3
       name: make & test tcc (aarch64-linux)
       with:
         arch: aarch64
@@ -127,8 +127,8 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 8
     steps:
-    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-    - uses: uraimo/run-on-arch-action@d94c13912ea685de38fccc1109385b83fd79427d # v3.0.1
+    - uses: actions/checkout@v6
+    - uses: uraimo/run-on-arch-action@v3
       name: make & test tcc (riscv64-linux)
       with:
         arch: riscv64
