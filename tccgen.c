@@ -7374,7 +7374,7 @@ again:
         d = gind();
         lblock(&a, &b);
         gsym(b);
-        if (t == TOK_WHILE)
+        if (tok == TOK_WHILE)
             skip(TOK_WHILE);
         else
             skip(中_判断);
